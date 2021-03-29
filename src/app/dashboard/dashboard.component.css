@@ -1,0 +1,22 @@
+.inp1
+{
+    border : none;
+}
+a{
+    color: black;
+}
+.space
+{
+    display: none;
+   
+}
+.card:hover .space{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.show{
+    display: flex;
+    justify-content: space-evenly;
+}
+

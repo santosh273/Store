@@ -1,0 +1,71 @@
+<div class="container">
+    <div class="text-center mt-5">
+        <button (click)="addNotes()">Add Notes</button>
+    </div>
+    <div class="row">
+        <form class="col-sm-10 col-md-8 col-lg-6 mx-auto mt-5" style="border: 1px solid black;" #formref = "ngForm" (ngSubmit)="onSubmit(formref.value)">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title" placeholder="Enter Title" ngModel>
+            </div>
+            <div class="mb-3">
+                <label for="activity" class="form-label">Activity</label>
+                <input type="text" class="form-control" id="activity" name="activity" placeholder="Enter Activity" ngModel>
+            </div>
+            <div class="text-center mb-3">
+                <button class="btn btn-primary">Add</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mt-3">
+        <div class="col" *ngFor="let activity of activities">
+            <div class="card mb-2">
+                <div class="card-body" *ngIf="status && activity.id == selectedId">
+                    <input type="text" class="form-control m-2 inp1" id="title" name="title" placeholder="Enter Title" [value]="activity.title" #r1 autocomplete="off">
+                    <input type="text" class="form-control m-2 inp1" id="activity" name="activity" placeholder="Enter Activity" [value]="activity.activity" #r2 autocomplete="off">
+                    <div class="space">
+                        <a  (click)="remind(activity.id)"><fa-icon [icon]="faStopwatch"></fa-icon></a>
+                        <a  (click)="save(activity.id,r1.value,r2.value)"><fa-icon [icon]="faSave"></fa-icon></a>
+                        <a  (click)="delete(activity.id)"><fa-icon [icon]="faTrash"></fa-icon></a>
+                    </div>
+                </div>
+                <div class="card-body" *ngIf="(!status || (status && activity.id !== selectedId))">
+                    <h5 class="m-2">{{activity.title}}</h5>
+                    <p class="m-2">{{activity.activity}}</p>
+                    <div class="space">
+                        <a  (click)="remind(activity.id)"><fa-icon [icon]="faStopwatch"></fa-icon></a>
+                        <a  (click)="edit(activity.id)" data-bs-toggle="modal" data-bs-target="#Modal"><fa-icon [icon]="faPencilAlt"></fa-icon></a>
+                        <a  (click)="delete(activity.id)"><fa-icon [icon]="faTrash"></fa-icon></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Modal">
+        Launch demo modal
+    </button>
+      
+      <!-- Modal -->
+      <div class="modal fade" id="Modal" >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-body">
+                <input type="text" class="form-control m-2 inp1" id="title" name="title" placeholder="Enter Title" #r1 autocomplete="off">
+                <input type="text" class="form-control m-2 inp1" id="activity" name="activity" placeholder="Enter Activity" #r2 autocomplete="off">
+            </div>
+            <div class="modal-footer">
+                <div class="show w-100">
+                    <a ><fa-icon [icon]="faStopwatch"></fa-icon></a>
+                    <a ><fa-icon [icon]="faSave"></fa-icon></a>
+                    <a ><fa-icon [icon]="faTrash"></fa-icon></a>
+                    <a ><fa-icon [icon]="faTimes"></fa-icon></a>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+</div>
