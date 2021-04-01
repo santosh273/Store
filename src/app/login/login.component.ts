@@ -1,6 +1,8 @@
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
+import { faUserTie,faKey } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-login',
@@ -9,9 +11,13 @@ import { UserService } from '../user.service';
 })
 export class LoginComponent implements OnInit {
 
+  faUserTie = faUserTie;
+  faKey = faKey;
+
   constructor(private us:UserService,private rt:Router) { }
 
   ngOnInit(): void {
+    
   }
 
   onSubmit(credObj)
@@ -39,12 +45,9 @@ export class LoginComponent implements OnInit {
 
   forgot()
   {
-    this.rt.navigateByUrl("/forgotpwd");
-  }
-
-  register()
-  {
-    this.rt.navigateByUrl("/register");
+    this.rt.navigateByUrl("/forms/forgotpwd");
   }
 
 }
+
+
