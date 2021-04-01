@@ -1,5 +1,32 @@
-a
+.inp{
+    background-color: rgba(179, 172, 172, 0.212);
+    margin: 15px 20px;
+    padding: 10px;
+}
+
+input{
+    padding-left: 10px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+.button
 {
-    cursor: pointer;
-    text-decoration: none;
+    text-align: center;
+    margin: 20px;
+    
+}
+
+.btn{
+    color: white;
+    background-color: rgb(21, 182, 21);
+    width: 100%;
+    padding: 10px;
+    outline: none;
+}
+
+.err
+{
+    float: right;
 }

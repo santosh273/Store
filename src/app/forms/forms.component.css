@@ -1,0 +1,30 @@
+.formbtn
+{
+    cursor: pointer;
+    background-color: white;
+    height: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+}
+
+.formbtn fa-icon
+{
+    font-size: 30px;
+}
+.formbtn p
+{
+    text-align: center;
+    margin-bottom: 0px;
+}
+.active
+{
+    color: white;
+    background-color: rgb(21, 182, 21);
+}
+
+.formbtn:focus
+{
+    border: none;
+}

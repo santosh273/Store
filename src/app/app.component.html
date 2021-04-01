@@ -1,35 +1,26 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#"><fa-icon [icon]="faClipboard" style="padding : 0px 8px"></fa-icon>Store</a>
+    <a class="navbar-brand" href="#"><fa-icon [icon]="faClipboard" class="icon"></fa-icon><span class="brand">Store</span></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navid">
-      <span class="navbar-toggler-icon"></span>
+      <fa-icon [icon]="faBars" class="toggleicon"></fa-icon>
     </button>
     <div class="collapse navbar-collapse" id="navid">
-      <div class="row w-100">
-        <div class="col-sm-12 col-md-8">
-          <ul class="navbar-nav">
+          <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <a class="nav-link" routerLink="login" routerLinkActive="active"><fa-icon [icon]="faSignInAlt" style="margin: 0px 10px;"></fa-icon>Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="register" routerLinkActive="active"><fa-icon [icon]="faUserPlus" style="margin: 0px 10px;"></fa-icon>Register</a>
+              <a class="nav-link" routerLink="forms" routerLinkActive="active"><fa-icon [icon]="faSignInAlt" style="margin: 0px 10px;"></fa-icon>Login</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" routerLink="dashboard" routerLinkActive="active"><fa-icon [icon]="faCalendarCheck" style="margin: 0px 10px;"></fa-icon>Dashboard</a>
             </li>
           </ul>
-        </div>
-        <div class="col-sm-12 col-md-4 n">
-            <p style="color: white; padding:0px 10px; margin: 0;">{{username}}</p>
-        </div>
       </div>
     </div>
-  </div>
 </nav>
-<div class="container-fluid">
+<!-- <div class="container-fluid">
   <div *ngIf="username">
     <button class="btn btn-primary m-3" (click)="logout()">Logout</button>
   </div>
-</div>
+</div>  -->
+<router-outlet></router-outlet> 
 
-<router-outlet></router-outlet>
+

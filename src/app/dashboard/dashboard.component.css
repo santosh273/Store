@@ -1,10 +1,4 @@
-.inp1
-{
-    border : none;
-}
-a{
-    color: black;
-}
+
 .space
 {
     display: none;
@@ -20,3 +14,49 @@ a{
     justify-content: space-evenly;
 }
 
+
+.splbtn
+{
+    padding: 10px;
+    background-color: rgb(21, 182, 21);
+    color: White;
+    border-radius: 10px;
+    outline: none;
+}
+.splform
+{
+    padding: 20px 0px;
+    background-color: white;
+    display: none;
+}
+
+.icon
+{
+    margin-left: 8px;
+}
+
+
+.inp{
+    background-color: rgba(179, 172, 172, 0.212);
+    margin: 25px 20px;
+    padding: 10px;
+}
+
+input{
+    padding-left: 10px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+.err
+{
+    float: right;
+}
+
+.btn{
+    color: white;
+    background-color: rgb(21, 182, 21);
+    padding: 8px 30px;
+    outline: none;
+}

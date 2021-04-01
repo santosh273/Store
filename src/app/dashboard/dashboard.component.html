@@ -1,71 +1,234 @@
 <div class="container">
-    <div class="text-center mt-5">
-        <button (click)="addNotes()">Add Notes</button>
-    </div>
-    <div class="row">
-        <form class="col-sm-10 col-md-8 col-lg-6 mx-auto mt-5" style="border: 1px solid black;" #formref = "ngForm" (ngSubmit)="onSubmit(formref.value)">
-            <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" name="title" placeholder="Enter Title" ngModel>
-            </div>
-            <div class="mb-3">
-                <label for="activity" class="form-label">Activity</label>
-                <input type="text" class="form-control" id="activity" name="activity" placeholder="Enter Activity" ngModel>
-            </div>
-            <div class="text-center mb-3">
-                <button class="btn btn-primary">Add</button>
-            </div>
-        </form>
+    <div class="row mt-5">
+        <div class="col-sm-6 mx-auto">
+            <button class="btn w-100 splbtn" (click)="transform()" id="t1">Add Notes</button>
+            <div class="splform" id="t2">
+                <div class="inp">
+                    <span><fa-icon [icon]="faPencilAlt"></fa-icon></span>
+                    <input type="text" id="title1" name="title" placeholder="Title" [(ngModel)]="activityObj2.title" #r1="ngModel" required autocomplete="off">
+                    <span *ngIf="r1.touched && r1.errors?.required">
+                        <span class="text-danger err">Provide a title</span>
+                    </span>
+                </div>
+                <div class="inp">
+                    <span><fa-icon [icon]="faStickyNote"></fa-icon></span>
+                    <input type="text" id="activity1" name="activity" placeholder="Activity" [(ngModel)]="activityObj2.activity" #r2="ngModel" required autocomplete="off">
+                    <span *ngIf="r2.touched && r2.invalid">
+                        <span class="text-danger err">Provide description</span>
+                    </span> 
+                </div>
+                <div class="mt-3 mb-3 show">
+                    <a class="btn" (click)="remind(activityObj.id)">Remind<fa-icon [icon]="faStopwatch" class="icon"></fa-icon></a>
+                    <a class="btn" (click)="add()">Add<fa-icon [icon]="faPlus"  class="icon"></fa-icon></a>
+                    <a class="btn" (click)="close()">Close<fa-icon [icon]="faTimes" class="icon"></fa-icon></a>
+                </div>
+            </div> 
+        </div>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mt-3">
-        <div class="col" *ngFor="let activity of activities">
-            <div class="card mb-2">
-                <div class="card-body" *ngIf="status && activity.id == selectedId">
-                    <input type="text" class="form-control m-2 inp1" id="title" name="title" placeholder="Enter Title" [value]="activity.title" #r1 autocomplete="off">
-                    <input type="text" class="form-control m-2 inp1" id="activity" name="activity" placeholder="Enter Activity" [value]="activity.activity" #r2 autocomplete="off">
-                    <div class="space">
-                        <a  (click)="remind(activity.id)"><fa-icon [icon]="faStopwatch"></fa-icon></a>
-                        <a  (click)="save(activity.id,r1.value,r2.value)"><fa-icon [icon]="faSave"></fa-icon></a>
-                        <a  (click)="delete(activity.id)"><fa-icon [icon]="faTrash"></fa-icon></a>
+    <!-- <div class="row row-cols-1 row-cols-md-3">
+        <div *ngFor="let activity of activities; let i = index">
+            <div class="col" *ngIf="i<level">
+                <div class="card mt-3" style="height: 95%;">
+                    <div class="card-body">
+                        <h5 class="m-2">{{activity.title}}</h5>
+                        <p class="m-2">{{activity.activity}}</p>
                     </div>
-                </div>
-                <div class="card-body" *ngIf="(!status || (status && activity.id !== selectedId))">
-                    <h5 class="m-2">{{activity.title}}</h5>
-                    <p class="m-2">{{activity.activity}}</p>
-                    <div class="space">
-                        <a  (click)="remind(activity.id)"><fa-icon [icon]="faStopwatch"></fa-icon></a>
-                        <a  (click)="edit(activity.id)" data-bs-toggle="modal" data-bs-target="#Modal"><fa-icon [icon]="faPencilAlt"></fa-icon></a>
-                        <a  (click)="delete(activity.id)"><fa-icon [icon]="faTrash"></fa-icon></a>
+                    <div class="card-footer" style="background-color: white; border: none;">
+                        <div class="space">
+                            <a  (click)="remind(activity.id)"><fa-icon [icon]="faStopwatch"></fa-icon></a>
+                            <a  (click)="gotoModal(activity)" data-bs-toggle="modal" data-bs-target="#Modal"><fa-icon [icon]="faPencilAlt"></fa-icon></a>
+                            <a  (click)="delete(activity.id)"><fa-icon [icon]="faTrash"></fa-icon></a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Modal">
-        Launch demo modal
-    </button>
+    
+    <div class="row row-cols-1 row-cols-md-2">
+        <div *ngFor="let activity of activities; let i = index">
+            <div *ngIf="i != odd">
+                <div class="col" *ngIf="(i>=level) && (remainder == 2)">
+                    <div class="card mt-3" style="height: 95%;">
+                        <div class="card-body">
+                            <h5 class="m-2">{{activity.title}}</h5>
+                            <p class="m-2">{{activity.activity}}</p>
+                        </div>
+                        <div class="card-footer" style="background-color: white; border: none;">
+                            <div class="space">
+                                <a  (click)="remind(activity.id)"><fa-icon [icon]="faStopwatch"></fa-icon></a>
+                                <a  (click)="gotoModal(activity)" data-bs-toggle="modal" data-bs-target="#Modal"><fa-icon [icon]="faPencilAlt"></fa-icon></a>
+                                <a  (click)="delete(activity.id)"><fa-icon [icon]="faTrash"></fa-icon></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-1">
+        <div *ngFor="let activity of activities; let i = index">
+            <div class="col" *ngIf="i>=level && remainder == 1">
+                <div class="card mt-3" style="height: 95%;">
+                    <div class="card-body">
+                        <h5 class="m-2">{{activity.title}}</h5>
+                        <p class="m-2">{{activity.activity}}</p>
+                    </div>
+                    <div class="card-footer" style="background-color: white; border: none;">
+                        <div class="space">
+                            <a  (click)="remind(activity.id)"><fa-icon [icon]="faStopwatch"></fa-icon></a>
+                            <a  (click)="gotoModal(activity)" data-bs-toggle="modal" data-bs-target="#Modal"><fa-icon [icon]="faPencilAlt"></fa-icon></a>
+                            <a  (click)="delete(activity.id)"><fa-icon [icon]="faTrash"></fa-icon></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+ -->
+
+
+    <div class="row">
+        <div *ngFor="let activity of activities; let i = index">
+            <div *ngIf="i<level">
+                <div class="col-md-4">
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h5 class="m-2">{{activity.title}}</h5>
+                            <p class="m-2">{{activity.activity}}</p>
+                        </div>
+                        <div class="card-footer" style="background-color: white; border: none;">
+                            <div class="space">
+                                <a  (click)="remind(activity.id)"><fa-icon [icon]="faStopwatch"></fa-icon></a>
+                                <a  (click)="gotoModal(activity)" data-bs-toggle="modal" data-bs-target="#Modal"><fa-icon [icon]="faPencilAlt"></fa-icon></a>
+                                <a  (click)="delete(activity.id)"><fa-icon [icon]="faTrash"></fa-icon></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" *ngIf="(i>=level) && (remainder == 2)">
+                <div class="card mt-3" style="height: 95%;">
+                    <div class="card-body">
+                        <h5 class="m-2">{{activity.title}}</h5>
+                        <p class="m-2">{{activity.activity}}</p>
+                    </div>
+                    <div class="card-footer" style="background-color: white; border: none;">
+                        <div class="space">
+                            <a  (click)="remind(activity.id)"><fa-icon [icon]="faStopwatch"></fa-icon></a>
+                            <a  (click)="gotoModal(activity)" data-bs-toggle="modal" data-bs-target="#Modal"><fa-icon [icon]="faPencilAlt"></fa-icon></a>
+                            <a  (click)="delete(activity.id)"><fa-icon [icon]="faTrash"></fa-icon></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" *ngIf="i>=level && remainder == 1">
+                <div class="card mt-3" style="height: 95%;">
+                    <div class="card-body">
+                        <h5 class="m-2">{{activity.title}}</h5>
+                        <p class="m-2">{{activity.activity}}</p>
+                    </div>
+                    <div class="card-footer" style="background-color: white; border: none;">
+                        <div class="space">
+                            <a  (click)="remind(activity.id)"><fa-icon [icon]="faStopwatch"></fa-icon></a>
+                            <a  (click)="gotoModal(activity)" data-bs-toggle="modal" data-bs-target="#Modal"><fa-icon [icon]="faPencilAlt"></fa-icon></a>
+                            <a  (click)="delete(activity.id)"><fa-icon [icon]="faTrash"></fa-icon></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+ 
+
+    
+
+
+
+
+
+
+
+
+
+
+   
+
+
+
+
+  <!-- <div >
+    <div class="row mx-auto">
+        <div class="col w-50"  *ngFor="let activity of activities; let i = index">
+            <div class="card mt-3" style="height: 95%;">
+                <div class="card-body">
+                    <h5 class="m-2">{{activity.title}}</h5>
+                    <p class="m-2">{{activity.activity}}</p>
+                </div>
+                <div class="card-footer" style="background-color: white; border: none;">
+                    <div class="space">
+                        <a  (click)="remind(activity.id)"><fa-icon [icon]="faStopwatch"></fa-icon></a>
+                        <a  (click)="gotoModal(activity)" data-bs-toggle="modal" data-bs-target="#Modal"><fa-icon [icon]="faPencilAlt"></fa-icon></a>
+                        <a  (click)="delete(activity.id)"><fa-icon [icon]="faTrash"></fa-icon></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+ 
+
+
+
+
+
+
+
+    
+    <!-- 
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mt-5 mb-5" *ngIf="length>2">
+        <div class="col" *ngFor="let activity of activities">
+            <div class="card mt-3" style="height: 95%;">
+                <div class="card-body">
+                    <h5 class="m-2">{{activity.title}}</h5>
+                    <p class="m-2">{{activity.activity}}</p>
+                </div>
+                <div class="card-footer" style="background-color: white; border: none;">
+                    <div class="space">
+                        <a  (click)="remind(activity.id)"><fa-icon [icon]="faStopwatch"></fa-icon></a>
+                        <a  (click)="gotoModal(activity)" data-bs-toggle="modal" data-bs-target="#Modal"><fa-icon [icon]="faPencilAlt"></fa-icon></a>
+                        <a  (click)="delete(activity.id)"><fa-icon [icon]="faTrash"></fa-icon></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
       
-      <!-- Modal -->
-      <div class="modal fade" id="Modal" >
+      <div class="modal fade" id="Modal" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-body">
-                <input type="text" class="form-control m-2 inp1" id="title" name="title" placeholder="Enter Title" #r1 autocomplete="off">
-                <input type="text" class="form-control m-2 inp1" id="activity" name="activity" placeholder="Enter Activity" #r2 autocomplete="off">
+                <a data-bs-dismiss="modal" style="float: right;"><fa-icon [icon]="faTimes"></fa-icon></a>
+                <input type="text" class="form-control m-2 inp1" id="title2" name="title" placeholder="Enter Title" [(ngModel)]="activityObj.title" autocomplete="off">
+                <input type="text" class="form-control m-2 inp1" id="activity2" name="activity" placeholder="Enter Activity" [(ngModel)]="activityObj.activity" autocomplete="off">
             </div>
             <div class="modal-footer">
                 <div class="show w-100">
-                    <a ><fa-icon [icon]="faStopwatch"></fa-icon></a>
-                    <a ><fa-icon [icon]="faSave"></fa-icon></a>
-                    <a ><fa-icon [icon]="faTrash"></fa-icon></a>
-                    <a ><fa-icon [icon]="faTimes"></fa-icon></a>
+                    <a (click)="remind(activityObj.id)" data-bs-dismiss="modal"><fa-icon [icon]="faStopwatch"></fa-icon></a>
+                    <a (click)="save()" data-bs-dismiss="modal"><fa-icon [icon]="faSave"></fa-icon></a>
+                    <a (click)="delete(activityObj.id)" data-bs-dismiss="modal"><fa-icon [icon]="faTrash"></fa-icon></a>
                 </div>
             </div>
           </div>
         </div>
-      </div>
-    
-
-</div>
+      </div>-->
+</div> 
+ 

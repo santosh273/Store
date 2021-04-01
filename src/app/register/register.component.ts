@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
+import { faUserTie,faKey } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-register',
@@ -8,6 +9,9 @@ import { UserService } from '../user.service';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
+
+  faUserTie = faUserTie;
+  faKey = faKey;
 
   constructor(private us:UserService,private rt:Router) { }
 
@@ -21,7 +25,7 @@ export class RegisterComponent implements OnInit {
         if(res["message"] == "success")
         {
           alert("Registration successfull");
-          this.rt.navigateByUrl("/login");
+          this.rt.navigateByUrl("/forms/login");
         }
         else
         {
@@ -36,11 +40,6 @@ export class RegisterComponent implements OnInit {
       }
 
     )
-  }
-
-  login()
-  {
-    this.rt.navigateByUrl("/login");
   }
 
 }

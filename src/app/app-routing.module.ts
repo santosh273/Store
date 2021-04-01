@@ -2,15 +2,22 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ForgotpwdComponent } from './forgotpwd/forgotpwd.component';
+import { FormsComponent } from './forms/forms.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { RouteGuard } from './route.guard';
 
 const routes: Routes = [
-  {path:"login",component:LoginComponent},
-  {path:"register",component:RegisterComponent},
-  {path:"dashboard",component:DashboardComponent},
-  {path:"forgotpwd",component:ForgotpwdComponent},
-  {path:"",redirectTo:"login",pathMatch:"full"}
+
+  {path:"",redirectTo:"/forms/login",pathMatch:"full"},
+  {path:"forms",redirectTo:"/forms/login",pathMatch:"full"},
+  {path:"forms",component:FormsComponent,children:[
+    {path:"login",component:LoginComponent},
+    {path:"register",component:RegisterComponent},
+    {path:"forgotpwd",component:ForgotpwdComponent},
+  ]},
+  {path:"dashboard",component:DashboardComponent,canActivate:[RouteGuard]},
+
 ];
 
 @NgModule({

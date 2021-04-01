@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivityService } from '../activity.service';
-import { faTrash,faPencilAlt,faStopwatch,faSave,faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTrash,faPencilAlt,faStopwatch,faSave,faTimes,faPlusCircle,faStickyNote} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,12 +14,18 @@ export class DashboardComponent implements OnInit {
   faStopwatch = faStopwatch;
   faSave = faSave;
   faTimes = faTimes;
+  faPlus = faPlusCircle;
+  faStickyNote = faStickyNote;
 
   activities;
-  selectedId;
+  odd;
+  length;
+  level;
+  quotient;
+  remainder;
   username = localStorage.getItem("username");
-  status = false;
   activityObj = {"username":"","id":"","title":"","activity":""};
+  activityObj2 = {"username":"","id":"","title":"","activity":""};
 
   constructor(private as:ActivityService) { }
 
@@ -29,18 +35,26 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  addNotes()
+  transform()
   {
-    
+    document.getElementById("t1").style.display = "none";
+    document.getElementById("t2").style.display = "block";
   }
 
-  onSubmit(activityObj)
+  close()
   {
+    document.getElementById("t1").style.display = "block";
+    document.getElementById("t2").style.display = "none";
+  }
+
+  add()
+  {
+    this.close();
     let id = Date.now().toString();
-    activityObj.username = this.username;
-    activityObj.id = id;
+    this.activityObj2.username = this.username;
+    this.activityObj2.id = id;
     
-    this.as.addActivity(activityObj).subscribe(
+    this.as.addActivity(this.activityObj2).subscribe(
       res=>{
         alert(res["message"]);
       },
@@ -49,6 +63,8 @@ export class DashboardComponent implements OnInit {
         alert("Something went Wrong...Try again...");
       }
     )
+    this.activityObj2.title = "";
+    this.activityObj2.activity = "";
     this.getActivities();
   }
 
@@ -56,7 +72,27 @@ export class DashboardComponent implements OnInit {
   {
     this.as.getActivities(this.username).subscribe(
       res=>{
-        this.activities = res["message"];
+        if(res["message"]=="success")
+        {
+          this.activities = res["activities"];
+          this.length = this.activities.length;
+
+          this.quotient = this.length/3;
+          this.remainder = this.length%3;
+          this.level = Math.floor(this.quotient)*3;
+          if((this.remainder == 2) && (this.length%2 == 1))
+          {
+            this.odd = this.length-3
+          }
+          
+      
+          console.log("hi",this.length,this.level,this.remainder);
+          
+        }
+        else{
+          alert(res["message"]);
+        }
+          
       }
     )
   }
@@ -71,19 +107,10 @@ export class DashboardComponent implements OnInit {
     this.getActivities();
   }
 
-  edit(id)
+  
+  save()
   {
-    this.status = true;
-    this.selectedId = id;
-
-  }
-  save(id,title,activity)
-  {
-    
-
-    this.activityObj.id = id;
-    this.activityObj.title = title;
-    this.activityObj.activity = activity;
+    console.log(this.activityObj);
     
     this.as.updateActivity(this.activityObj).subscribe(
       res=>{
@@ -91,8 +118,19 @@ export class DashboardComponent implements OnInit {
       }
     )
     this.getActivities();
-    this.status = false;
     
+  }
+
+  gotoModal(activity)
+  {
+    this.activityObj.id = activity.id;
+    this.activityObj.title = activity.title;
+    this.activityObj.activity = activity.activity;
+  }
+
+  remind(id)
+  {
+
   }
 
 }

@@ -1,3 +1,41 @@
+.icon
+{
+    font-size: 32px;
+    color:rgb(204, 238, 9);
+    margin: 0px 10px;
+}
+
+.brand
+{
+    font-size: 32px;
+    color:rgb(204, 238, 9);
+}
+
+.toggleicon
+{
+    font-size: 30px;
+    color:white;
+   
+}
+
+.nav-link
+{
+    font-size: 18px;
+    color:white;
+    margin: 0px 10px;
+}
+
+.nav-link:hover
+{
+    color: rgb(138, 243, 138);
+}
+
+
+
+
+
+
+
 .n
 {
     display: flex;

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
-import { faSignInAlt,faClipboard,faCalendarCheck,faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faSignInAlt,faClipboard,faCalendarCheck,faBars} from '@fortawesome/free-solid-svg-icons';
 import { } from '@fortawesome/free-regular-svg-icons'
 
 @Component({
@@ -15,7 +15,7 @@ export class AppComponent implements OnInit{
   faSignInAlt = faSignInAlt;
   faClipboard = faClipboard;
   faCalendarCheck = faCalendarCheck;
-  faUserPlus = faUserPlus;
+  faBars = faBars;
   
   username;
   constructor(private us:UserService,private rt:Router){}
