@@ -26,7 +26,18 @@ input{
     outline: none;
 }
 
-.err
+@media only screen and (min-width: 577px)
 {
-    float: right;
+    .err
+    {
+        float: right;
+        display: inline;
+    }
+}
+
+@media only screen and (max-width: 576px)
+{
+    .err{
+        display: inline-block;
+    }
 }

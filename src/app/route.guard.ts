@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { CanActivate } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RouteGuard implements CanActivate {
+
+  constructor(private toastr: ToastrService){}
+
   canActivate(): boolean 
   {
     let token = localStorage.getItem("token");
@@ -14,7 +17,7 @@ export class RouteGuard implements CanActivate {
       return true;
     }
     else{
-      alert("Unauthorized access");
+      this.toastr.warning("Unauthorized access. Login to Continue","Store");
       return false;
     }
   }

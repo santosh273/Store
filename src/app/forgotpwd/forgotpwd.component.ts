@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { faUserTie,faKey } from '@fortawesome/free-solid-svg-icons';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-forgotpwd',
@@ -13,31 +15,72 @@ export class ForgotpwdComponent implements OnInit {
   faUserTie = faUserTie;
   faKey = faKey;
 
-  constructor(private us:UserService,private rt:Router) { }
+  forgotpwdForm : FormGroup;
+  submitted = false;
+
+  constructor(private us:UserService,private rt:Router,private toastr: ToastrService) { }
 
   ngOnInit(): void {
+
+    this.forgotpwdForm = new FormGroup(
+      {
+        username : new FormControl(null,Validators.required),
+        password : new FormControl(null,[Validators.required,Validators.minLength(4)]),
+        cpassword : new FormControl(null,[Validators.required,Validators.minLength(4)])
+      }
+    )
   }
 
-  onSubmit(credObj)
+  gc()
   {
-    if(credObj.password == credObj.cpassword)
+    return this.forgotpwdForm.controls;
+  }
+
+  onSubmit()
+  {
+    this.submitted = true;
+    if(this.forgotpwdForm.valid)
     {
-      this.us.changePassword(credObj).subscribe(
-        res => {
-          if(res["message"] == "Invalid Username")
-          {
-            alert(res["message"]);
+      let credObj = this.forgotpwdForm.value;
+      if(credObj.password == credObj.cpassword)
+      {
+        this.us.changePassword(credObj).subscribe(
+          res => {
+            if(res["message"] == "Invalid Username")
+            {
+              this.toastwarning("Reset Page",res["message"]);
+            }
+            else{
+              this.toastsuccess("Reset Page","Password changed successfully");
+              setTimeout(()=>this.rt.navigateByUrl("/forms/login"),2500);
+            }
+          },
+          err => {
+            console.log(err);
+            this.toasterror("Reset Page","Something went Wrong...Try again...");
           }
-          else{
-            alert(res["message"]);
-            this.rt.navigateByUrl("/forms/login");
-          }
-        }
-      )
+        )
+      }
+      else{
+        this.toastwarning("Reset Page","Passwords are not matched. Enter again");
+      }
     }
-    else{
-      alert("Passwords are not matched. Enter again");
-    }
+    
+  }
+
+  toastsuccess(heading,message)
+  {
+    this.toastr.success(message,heading);
+  }
+
+  toasterror(heading,message)
+  {
+    this.toastr.error(message,heading);
+  }
+
+  toastwarning(heading,message)
+  {
+    this.toastr.warning(message,heading);
   }
 
 }

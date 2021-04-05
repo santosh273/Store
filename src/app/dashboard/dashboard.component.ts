@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivityService } from '../activity.service';
-import { faTrash,faPencilAlt,faStopwatch,faSave,faTimes,faPlusCircle,faStickyNote} from '@fortawesome/free-solid-svg-icons';
+import { faTrash,faPencilAlt,faStopwatch,faSave,faTimes,faPlusCircle,faStickyNote,faSearch} from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -16,18 +19,21 @@ export class DashboardComponent implements OnInit {
   faTimes = faTimes;
   faPlus = faPlusCircle;
   faStickyNote = faStickyNote;
+  faSearch = faSearch;
 
+  searchTerm;
   activities;
-  odd;
   length;
   level;
   quotient;
   remainder;
+  two;
+  one;
   username = localStorage.getItem("username");
   activityObj = {"username":"","id":"","title":"","activity":""};
   activityObj2 = {"username":"","id":"","title":"","activity":""};
 
-  constructor(private as:ActivityService) { }
+  constructor(private as:ActivityService,private rt:Router,private toastr: ToastrService) { }
 
   ngOnInit(): void {
 
@@ -56,16 +62,24 @@ export class DashboardComponent implements OnInit {
     
     this.as.addActivity(this.activityObj2).subscribe(
       res=>{
-        alert(res["message"]);
+        if(res["message"] == ("Session expired. Please login again" || "Unauthorized access. Login to continue"))
+        {
+          this.toastwarning("Dashboard Page",res["message"]);
+          setTimeout(()=>this.gotologin(),2500);
+        }
+        else{
+          this.toastsuccess("Dashboard Page",res["message"]);
+          this.activityObj2.title = "";
+          this.activityObj2.activity = "";
+          this.getActivities();
+        }
       },
       err => {
         console.log(err);
-        alert("Something went Wrong...Try again...");
+        this.toasterror("Dashboard Page","Something went Wrong...Try again...");
       }
     )
-    this.activityObj2.title = "";
-    this.activityObj2.activity = "";
-    this.getActivities();
+    
   }
 
   getActivities()
@@ -76,21 +90,26 @@ export class DashboardComponent implements OnInit {
         {
           this.activities = res["activities"];
           this.length = this.activities.length;
-
-          this.quotient = this.length/3;
           this.remainder = this.length%3;
-          this.level = Math.floor(this.quotient)*3;
-          if((this.remainder == 2) && (this.length%2 == 1))
+          this.level = Math.floor(this.length/3)*3;
+          if(this.remainder == 2)
           {
-            this.odd = this.length-3
+            this.two = this.activities.splice(this.level);
           }
-          
-      
-          console.log("hi",this.length,this.level,this.remainder);
-          
+          if(this.remainder == 1)
+          {
+            this.one = this.activities.splice(this.level);
+          }
         }
         else{
-          alert(res["message"]);
+          if(res["message"] == ("Session expired. Please login again" || "Unauthorized access. Login to continue"))
+          {
+            this.toastwarning("Dashboard Page",res["message"]);
+            setTimeout(()=>this.gotologin(),2500);
+          }
+          else{
+            this.toasterror("Dashboard Page",res["message"]);
+          }
         }
           
       }
@@ -101,24 +120,35 @@ export class DashboardComponent implements OnInit {
   {
     this.as.deleteActivity(id).subscribe(
       res=>{
-        alert(res["message"]);
+        if(res["message"] == ("Session expired. Please login again" || "Unauthorized access. Login to continue"))
+        {
+          this.toastwarning("Dashboard Page",res["message"]);
+          setTimeout(()=>this.gotologin(),2500);
+        }
+        else{
+          this.toastsuccess("Dashboard Page",res["message"]);
+          this.getActivities();
+        }
       }
     )
-    this.getActivities();
   }
 
   
   save()
   {
-    console.log(this.activityObj);
-    
     this.as.updateActivity(this.activityObj).subscribe(
       res=>{
-        alert(res["message"]);
+        if(res["message"] == ("Session expired. Please login again" || "Unauthorized access. Login to continue"))
+        {
+          this.toastwarning("Dashboard Page",res["message"]);
+          setTimeout(()=>this.gotologin(),2500);
+        }
+        else{
+          this.toastsuccess("Dashboard Page",res["message"]);
+          this.getActivities();
+        }
       }
     )
-    this.getActivities();
-    
   }
 
   gotoModal(activity)
@@ -128,9 +158,29 @@ export class DashboardComponent implements OnInit {
     this.activityObj.activity = activity.activity;
   }
 
+  gotologin()
+  {
+    this.rt.navigateByUrl("/forms/login");
+  }
+
   remind(id)
   {
 
+  }
+
+  toastsuccess(heading,message)
+  {
+    this.toastr.success(message,heading);
+  }
+
+  toasterror(heading,message)
+  {
+    this.toastr.error(message,heading);
+  }
+
+  toastwarning(heading,message)
+  {
+    this.toastr.warning(message,heading);
   }
 
 }

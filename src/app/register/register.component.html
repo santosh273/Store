@@ -1,32 +1,32 @@
-<form #formref = "ngForm" (ngSubmit)="formref.form.valid && onSubmit(formref.value)">
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <h4 class="text-center m-4">Register</h4>
     <div class="inp">
         <span><fa-icon [icon]="faUserTie"></fa-icon></span>
-        <input type="text" id="firstname" name="firstname" placeholder="Firstname" ngModel required #firstname="ngModel" autocomplete="off">
-        <span *ngIf="formref.submitted || (firstname.touched)">
-            <span *ngIf="firstname.errors?.required" class="text-danger err">Please enter firstname</span>
+        <input type="text" id="firstname" name="firstname" placeholder="Firstname" formControlName="firstname" autocomplete="off">
+        <span *ngIf="submitted || (gc().firstname.touched)">
+            <span *ngIf="gc().firstname.hasError('required')" class="text-danger err">Please enter firstname</span>
         </span>
     </div>
     <div class="inp">
         <span><fa-icon [icon]="faUserTie"></fa-icon></span>
-        <input type="text"  id="lastname" name="lastname" placeholder="Lastname" ngModel required #lastname="ngModel" autocomplete="off">
-        <span *ngIf="formref.submitted || (lastname.touched)">
-            <span *ngIf="lastname.errors?.required" class="text-danger err">Please enter lastname</span>
+        <input type="text"  id="lastname" name="lastname" placeholder="Lastname" formControlName="lastname" autocomplete="off">
+        <span *ngIf="submitted || (gc().lastname.touched)">
+            <span *ngIf="gc().lastname.hasError('required')" class="text-danger err">Please enter lastname</span>
         </span>
     </div>
     <div class="inp">
         <span><fa-icon [icon]="faUserTie"></fa-icon></span>
-        <input type="text" id="username" name="username" placeholder="Username" ngModel required #username="ngModel" autocomplete="off">
-        <span *ngIf="formref.submitted || (username.touched)">
-            <span *ngIf="username.errors?.required" class="text-danger err">Please enter username</span>
+        <input type="text" id="username" name="username" placeholder="Username" formControlName="username" autocomplete="off">
+        <span *ngIf="submitted || (gc().username.touched)">
+            <span *ngIf="gc().username.hasError('required')" class="text-danger err">Please enter username</span>
         </span>
     </div>
     <div class="inp">
         <span><fa-icon [icon]="faKey"></fa-icon></span>
-        <input type="password" id="password" name="password" placeholder="Password" ngModel required minlength="4" #password="ngModel">
-        <span *ngIf="formref.submitted || password.touched || password.dirty">
-            <span *ngIf="password.errors?.required" class="text-danger err">Please enter password</span>
-            <span *ngIf="password.errors?.minlength" class="text-danger err">Atleast 4 characters</span>
+        <input type="password" id="password" name="password" placeholder="Password" formControlName="password">
+        <span *ngIf="submitted || gc().password.touched || gc().password.dirty">
+            <span *ngIf="gc().password.hasError('required')" class="text-danger err">Please enter password</span>
+            <span *ngIf="gc().password.hasError('minlength')" class="text-danger err">Atleast 4 characters</span>
         </span>
     </div>
     <div class="button">

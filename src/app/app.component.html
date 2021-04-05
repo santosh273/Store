@@ -13,14 +13,23 @@
               <a class="nav-link" routerLink="dashboard" routerLinkActive="active"><fa-icon [icon]="faCalendarCheck" style="margin: 0px 10px;"></fa-icon>Dashboard</a>
             </li>
           </ul>
+          <ul class="navbar-nav ms-auto" *ngIf="username">
+            <li class="nav-item dropdown">
+              <a class="nav-link userlink" id="dropdown" data-bs-toggle="dropdown">
+                <fa-icon [icon]="faUserCircle" class="usericon" style="margin: 0px 10px;"></fa-icon>{{username}}
+              </a>
+              <ul class="dropdown-menu">
+                <li><button class="dropdown-item btn" (click)="logout()">Log Out</button></li>
+              </ul>
+            </li>
+          </ul>
+
+          
+
+
       </div>
     </div>
 </nav>
-<!-- <div class="container-fluid">
-  <div *ngIf="username">
-    <button class="btn btn-primary m-3" (click)="logout()">Logout</button>
-  </div>
-</div>  -->
 <router-outlet></router-outlet> 
 
 
